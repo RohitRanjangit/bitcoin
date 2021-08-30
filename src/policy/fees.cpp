@@ -602,7 +602,7 @@ bool CBlockPolicyEstimator::processBlockTx(unsigned int nBlockHeight, const CTxM
 }
 
 void CBlockPolicyEstimator::processBlock(unsigned int nBlockHeight,
-                                         std::vector<const CTxMemPoolEntry*>& entries)
+                                         std::vector<const CTxMemPoolEntry*>& entries, size_t BlockTreeSize)
 {
     LOCK(m_cs_fee_estimator);
     if (nBlockHeight <= nBestSeenHeight) {
@@ -618,6 +618,14 @@ void CBlockPolicyEstimator::processBlock(unsigned int nBlockHeight,
     // calls to removeTx (via processBlockTx) correctly calculate age
     // of unconfirmed txs to remove from tracking.
     nBestSeenHeight = nBlockHeight;
+
+    if(nBlockHeight < BlockTreeSize - this->OLDEST_ESTIMATE_HISTORY){
+        // Ignore older block transation that won't contribute
+        // to fees calculation significantly. Delay the TxConfirmStats
+        // paramters calculation until the desired windows of block
+        // i.e OLDEST_ESTIMATE_HISTORY
+        return;
+    }
 
     // Update unconfirmed circular buffer
     feeStats->ClearCurrent(nBlockHeight);
