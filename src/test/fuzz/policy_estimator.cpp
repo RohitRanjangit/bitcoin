@@ -53,7 +53,7 @@ FUZZ_TARGET_INIT(policy_estimator, initialize_policy_estimator)
                 for (const CTxMemPoolEntry& mempool_entry : mempool_entries) {
                     ptrs.push_back(&mempool_entry);
                 }
-                block_policy_estimator.processBlock(fuzzed_data_provider.ConsumeIntegral<unsigned int>(), ptrs);
+                block_policy_estimator.processBlock(fuzzed_data_provider.ConsumeIntegral<unsigned int>(), ptrs, fuzzed_data_provider.ConsumeIntegral<unsigned int>()+1);
             },
             [&] {
                 (void)block_policy_estimator.removeTx(ConsumeUInt256(fuzzed_data_provider), /* inBlock */ fuzzed_data_provider.ConsumeBool());
