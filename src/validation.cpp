@@ -2390,9 +2390,10 @@ bool CChainState::ConnectTip(BlockValidationState& state, CBlockIndex* pindexNew
     LogPrint(BCLog::BENCH, "  - Writing chainstate: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime5 - nTime4) * MILLI, nTimeChainState * MICRO, nTimeChainState * MILLI / nBlocksTotal);
     // Remove conflicting transactions from the mempool.;
     if (m_mempool) {
-        m_mempool->removeForBlock(blockConnecting.vtx, pindexNew->nHeight, m_blockman.m_block_index.size());
+        m_mempool->removeForBlock(blockConnecting.vtx, pindexNew->nHeight);
         disconnectpool.removeForBlock(blockConnecting.vtx);
     }
+    std:: cout << m_blockman.m_block_index.size() << " " << pindexBestHeader->nHeight <<  std::endl;
     // Update m_chain & related variables.
     m_chain.SetTip(pindexNew);
     UpdateTip(pindexNew);

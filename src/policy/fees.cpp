@@ -12,10 +12,13 @@
 #include <txmempool.h>
 #include <util/serfloat.h>
 #include <util/system.h>
+#include <chain.h>
 
 static const char* FEE_ESTIMATES_FILENAME = "fee_estimates.dat";
 
 static constexpr double INF_FEERATE = 1e99;
+
+extern CBlockIndex *pindexBestHeader;
 
 std::string StringForFeeEstimateHorizon(FeeEstimateHorizon horizon)
 {
@@ -602,7 +605,7 @@ bool CBlockPolicyEstimator::processBlockTx(unsigned int nBlockHeight, const CTxM
 }
 
 void CBlockPolicyEstimator::processBlock(unsigned int nBlockHeight,
-                                         std::vector<const CTxMemPoolEntry*>& entries, size_t BlockTreeSize)
+                                         std::vector<const CTxMemPoolEntry*>& entries)
 {
     LOCK(m_cs_fee_estimator);
     if (nBlockHeight <= nBestSeenHeight) {
@@ -619,7 +622,7 @@ void CBlockPolicyEstimator::processBlock(unsigned int nBlockHeight,
     // of unconfirmed txs to remove from tracking.
     nBestSeenHeight = nBlockHeight;
 
-    if(nBlockHeight < BlockTreeSize - this->OLDEST_ESTIMATE_HISTORY){
+    if(nBlockHeight < pindexBestHeader->nHeight - this->OLDEST_ESTIMATE_HISTORY){
         // Ignore older block transation that won't contribute
         // to fees calculation significantly. Delay the TxConfirmStats
         // paramters calculation until the desired windows of block
