@@ -74,8 +74,7 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
                 txHashes[9-h].pop_back();
             }
         }
-        mpool.removeForBlock(block, blocknum+1, blocknum+2);
-        blocknum++;
+        mpool.removeForBlock(block, ++blocknum);
         block.clear();
         // Check after just a few txs that combining buckets works as expected
         if (blocknum == 3) {
@@ -114,8 +113,7 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
     // Mine 50 more blocks with no transactions happening, estimates shouldn't change
     // We haven't decayed the moving average enough so we still have enough data points in every bucket
     while (blocknum < 250)
-        mpool.removeForBlock(block, blocknum+1, blocknum+2);
-    blocknum++;
+        mpool.removeForBlock(block, ++blocknum);
 
     BOOST_CHECK(feeEst.estimateFee(1) == CFeeRate(0));
     for (int i = 2; i < 10;i++) {
@@ -135,8 +133,7 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
                 txHashes[j].push_back(hash);
             }
         }
-        mpool.removeForBlock(block, blocknum+1, blocknum+2);
-        blocknum++;
+        mpool.removeForBlock(block, ++blocknum);
     }
 
     for (int i = 1; i < 10;i++) {
@@ -153,7 +150,7 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
             txHashes[j].pop_back();
         }
     }
-    mpool.removeForBlock(block, 266, 267);
+    mpool.removeForBlock(block, 266);
     block.clear();
     BOOST_CHECK(feeEst.estimateFee(1) == CFeeRate(0));
     for (int i = 2; i < 10;i++) {
@@ -174,8 +171,7 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
 
             }
         }
-        mpool.removeForBlock(block, blocknum+1, blocknum+2);
-        blocknum++;
+        mpool.removeForBlock(block, ++blocknum);
         block.clear();
     }
     BOOST_CHECK(feeEst.estimateFee(1) == CFeeRate(0));

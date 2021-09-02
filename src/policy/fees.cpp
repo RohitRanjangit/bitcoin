@@ -622,6 +622,7 @@ void CBlockPolicyEstimator::processBlock(unsigned int nBlockHeight,
     // of unconfirmed txs to remove from tracking.
     nBestSeenHeight = nBlockHeight;
 
+    assert(pindexBestHeader);
     if(nBlockHeight < pindexBestHeader->nHeight - this->OLDEST_ESTIMATE_HISTORY){
         // Ignore older block transation that won't contribute
         // to fees calculation significantly. Delay the TxConfirmStats
