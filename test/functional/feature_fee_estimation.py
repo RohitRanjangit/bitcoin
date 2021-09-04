@@ -120,7 +120,6 @@ def check_raw_estimates(node, fees_seen):
     delta = 1.0e-6  # account for rounding error
     for i in range(1, 26):
         for _, e in node.estimaterawfee(i).items():
-            print(e)
             feerate = float(e["feerate"])
             assert_greater_than(feerate, 0)
 
@@ -149,7 +148,6 @@ def check_smart_estimates(node, fees_seen):
             assert_greater_than_or_equal(i + 1, e["blocks"])
 
 def check_estimates(node, fees_seen):
-    print(node, fees_seen)
     check_raw_estimates(node, fees_seen)
     check_smart_estimates(node, fees_seen)
 

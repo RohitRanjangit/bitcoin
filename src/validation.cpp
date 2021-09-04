@@ -2393,7 +2393,6 @@ bool CChainState::ConnectTip(BlockValidationState& state, CBlockIndex* pindexNew
         m_mempool->removeForBlock(blockConnecting.vtx, pindexNew->nHeight);
         disconnectpool.removeForBlock(blockConnecting.vtx);
     }
-    std:: cout << m_blockman.m_block_index.size() << " " << pindexBestHeader->nHeight <<  std::endl;
     // Update m_chain & related variables.
     m_chain.SetTip(pindexNew);
     UpdateTip(pindexNew);
