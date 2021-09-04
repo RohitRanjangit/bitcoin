@@ -622,19 +622,19 @@ void CBlockPolicyEstimator::processBlock(unsigned int nBlockHeight,
     // of unconfirmed txs to remove from tracking.
     nBestSeenHeight = nBlockHeight;
 
+    // Update unconfirmed circular buffer
+    feeStats->ClearCurrent(nBlockHeight);
+    shortStats->ClearCurrent(nBlockHeight);
+    longStats->ClearCurrent(nBlockHeight);
+
     assert(pindexBestHeader);
-    if(nBlockHeight < pindexBestHeader->nHeight - this->OLDEST_ESTIMATE_HISTORY){
+    if((int)nBlockHeight < pindexBestHeader->nHeight - (int)OLDEST_ESTIMATE_HISTORY){
         // Ignore older block transation that won't contribute
         // to fees calculation significantly. Delay the TxConfirmStats
         // paramters calculation until the desired windows of block
         // i.e OLDEST_ESTIMATE_HISTORY
         return;
     }
-
-    // Update unconfirmed circular buffer
-    feeStats->ClearCurrent(nBlockHeight);
-    shortStats->ClearCurrent(nBlockHeight);
-    longStats->ClearCurrent(nBlockHeight);
 
     // Decay all exponential averages
     feeStats->UpdateMovingAverages();

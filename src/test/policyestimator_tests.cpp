@@ -7,10 +7,13 @@
 #include <txmempool.h>
 #include <uint256.h>
 #include <util/time.h>
+#include <chain.h>
 
 #include <test/util/setup_common.h>
 
 #include <boost/test/unit_test.hpp>
+
+extern CBlockIndex* pindexBestHeader;
 
 BOOST_FIXTURE_TEST_SUITE(policyestimator_tests, BasicTestingSetup)
 
@@ -24,6 +27,9 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
     CAmount deltaFee(100);
     std::vector<CAmount> feeV;
 
+    pindexBestHeader = new CBlockIndex();
+    //pindexBestHeader->nHeight = 666;
+    assert(!pindexBestHeader->nHeight);
     // Populate vectors of increasing fees
     for (int j = 0; j < 10; j++) {
         feeV.push_back(basefee * (j+1));
