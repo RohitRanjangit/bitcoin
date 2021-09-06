@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
     std::vector<CAmount> feeV;
 
     pindexBestHeader = new CBlockIndex();
-    //pindexBestHeader->nHeight = 666;
+    pindexBestHeader->nHeight = 666;
     assert(!pindexBestHeader->nHeight);
     // Populate vectors of increasing fees
     for (int j = 0; j < 10; j++) {
