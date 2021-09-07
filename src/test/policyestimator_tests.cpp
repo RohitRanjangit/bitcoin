@@ -4,10 +4,10 @@
 
 #include <policy/fees.h>
 #include <policy/policy.h>
+#include <chain.h>
 #include <txmempool.h>
 #include <uint256.h>
 #include <util/time.h>
-#include <chain.h>
 
 #include <test/util/setup_common.h>
 
@@ -28,8 +28,11 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
     std::vector<CAmount> feeV;
 
     pindexBestHeader = new CBlockIndex();
-    pindexBestHeader->nHeight = 666;
+
+    // Maximum value of blocknum can be 665
+    pindexBestHeader->nHeight = 665;
     assert(!pindexBestHeader->nHeight);
+    
     // Populate vectors of increasing fees
     for (int j = 0; j < 10; j++) {
         feeV.push_back(basefee * (j+1));

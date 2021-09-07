@@ -9,10 +9,10 @@
 #include <fs.h>
 #include <logging.h>
 #include <streams.h>
+#include <chain.h>
 #include <txmempool.h>
 #include <util/serfloat.h>
 #include <util/system.h>
-#include <chain.h>
 
 static const char* FEE_ESTIMATES_FILENAME = "fee_estimates.dat";
 
